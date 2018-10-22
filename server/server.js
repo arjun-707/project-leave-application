@@ -2,23 +2,27 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 
+
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use((req, res, next)=>{
-    req.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-})
-var mongo_connection = "mongodb://<username>:<password>@aws-us-east-1-portal.3.dblayer.com:10660,aws-us-east-1-portal.0.dblayer.com:10844/admin?ssl=true"
+
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 var mongoOptions = {
-    ssl: true,
+    /* ssl: true,
     sslValidate: true,
     sslCA: [process.env.COMPOSE_MONGO_CA],
     poolSize: 5,
     reconnectTries: 1,
-    auto_reconnect: true,
+    auto_reconnect: true, */
     useNewUrlParser: true
   }
 const mongoConnection = (mongoURI) => {
@@ -96,6 +100,7 @@ app.post('/save', (req, res) => {
         );
         schemaObject.save() // saving into database
         .then((lastDoc) => {
+            console.log(lastDoc)
             res.send(JSON.stringify({'error': false,msg:'data stored successfully'}));
         }).
         catch((e) => {
@@ -110,6 +115,7 @@ app.post('/fetch', (req, res) =>{
     
     mongoSchemaObj.find({},{_id:0}) // fetch from database
     .then((records) => {
+        console.log(records)
         res.send(JSON.stringify({'error': false,msg:records}));
     }).
     catch((e) => {
