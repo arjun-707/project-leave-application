@@ -64,7 +64,8 @@ export class LeaveComponent extends Component {
             })
         ))
         .then(res => {
-            console.log(res)
+            // console.log(res)
+            this.fetchRequest()
         })
         .catch(console.log)
     }
@@ -84,8 +85,7 @@ export class LeaveComponent extends Component {
             })
         ))
         .then(res => {
-            this.state.users = res;
-            console.log(this.state)
+            this.setState({users:res.data.msg});
         })
         .catch(console.log)
     }

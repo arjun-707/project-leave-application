@@ -27,7 +27,7 @@ var mongoOptions = {
   }
 const mongoConnection = (mongoURI) => {
     if (!mongoURI || typeof mongoURI == 'undefined' || mongoURI.length < 1) {
-        mongoURI = "mongodb://arjun_singh707:<PASSWORD>@cluster0-shard-00-00-mxba5.mongodb.net:27017,cluster0-shard-00-01-mxba5.mongodb.net:27017,cluster0-shard-00-02-mxba5.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true"
+        mongoURI = "mongodb://arjun_singh707:%40rjun99101qaz@cluster0-shard-00-00-mxba5.mongodb.net:27017,cluster0-shard-00-01-mxba5.mongodb.net:27017,cluster0-shard-00-02-mxba5.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true"
     }
     return mongoose.createConnection(mongoURI, mongoOptions, (mongoErr) => {
         if (mongoErr) {
@@ -100,7 +100,6 @@ app.post('/save', (req, res) => {
         );
         schemaObject.save() // saving into database
         .then((lastDoc) => {
-            console.log(lastDoc)
             res.send(JSON.stringify({'error': false,msg:'data stored successfully'}));
         }).
         catch((e) => {
@@ -115,7 +114,6 @@ app.post('/fetch', (req, res) =>{
     
     mongoSchemaObj.find({},{_id:0}) // fetch from database
     .then((records) => {
-        console.log(records)
         res.send(JSON.stringify({'error': false,msg:records}));
     }).
     catch((e) => {
