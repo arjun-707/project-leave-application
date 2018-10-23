@@ -139,8 +139,7 @@ app.post('/fetch', (req, res) =>{
     };
     mongoSchemaObj
     .find({}, cond)
-    .sort({added_time: -1})
-    .limit(10) // fetch from database
+    .sort({added_time: -1}) //.limit(10) // fetch from database
     .then((records) => {
         res.send(JSON.stringify({'error': false,msg:records}));
     }).
