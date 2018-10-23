@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
 
-
-
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +20,7 @@ var mongoOptions = {
     sslCA: [process.env.COMPOSE_MONGO_CA],
     poolSize: 5,
     reconnectTries: 1,
-    auto_reconnect: true, */
+    auto_reconnect: @rjun99101qaz, */
     useNewUrlParser: true
   }
 const mongoConnection = (mongoURI) => {
@@ -110,9 +108,39 @@ app.post('/save', (req, res) => {
     else 
         res.status(400).send('email, subject and contents are required');
 })
+app.post('/approve', (req, res) => {
+    params = JSON.parse(Object.keys(req.body));
+    if (typeof params == 'object') {
+        if (!params.hasOwnProperty('email')) {
+            res.status(400).send('email is missing');
+        }
+        if (!mongoSchemaObj) {
+            console.log(`Application stopped due to Mongo Schema Error : ${mongoSchemaObj}`);
+            res.status(500).send('something went wrong');
+        }
+        mongoSchemaObj
+        .update({email: params.email}, {approved:1}, {upsert:true})
+        .then((records) => {
+            res.send(JSON.stringify({'error': false,msg:'record updated'}));
+        }).
+        catch((e) => {
+            console.log(e)
+            res.status(500).send('something went wrong');
+        })
+    }
+    else 
+        res.status(400).send('email, subject and contents are required');
+})
 app.post('/fetch', (req, res) =>{
-    
-    mongoSchemaObj.find({},{_id:0}) // fetch from database
+    let cond = {
+        _id: 0,
+        error: 0,
+        __v: 0
+    };
+    mongoSchemaObj
+    .find({}, cond)
+    .sort({added_time: -1})
+    .limit(10) // fetch from database
     .then((records) => {
         res.send(JSON.stringify({'error': false,msg:records}));
     }).

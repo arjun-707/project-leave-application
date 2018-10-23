@@ -1,5 +1,6 @@
 import React, {  Component } from "react";
 import "./leave.css";
+import { Modal, Button } from 'react-bootstrap';
 import { ListComponent } from "../leave-list/list";
 
 export class LeaveComponent extends Component {
@@ -10,11 +11,15 @@ export class LeaveComponent extends Component {
             email:'hr@gmail.com',
             subject:'',
             content:'',
-            users:[]
+            users:[],
+            showModal: false
         }
 
         this.sendRequest = this.sendRequest.bind(this);
         this.fetchRequest = this.fetchRequest.bind(this);
+        /* this.openModal = this.open.bind(this);
+        this.closeModal = this.close.bind(this); */
+        this.fetchRequest();
     }
 
     render() {
@@ -39,9 +44,27 @@ export class LeaveComponent extends Component {
                     </div>
                     
                 </form>
-                <div className ="show-data">
-                    <ListComponent  list =  {this.state.users}/>
-                </div>
+                {/* <div className ="show-data">
+                    <Modal className="modal-container" 
+                        show={this.state.showModal} 
+                        onHide={this.close}
+                        animation={true} 
+                        bsSize="small">
+
+                        <Modal.Header closeButton>
+                            <Modal.Title>Leave Application List</Modal.Title>
+                        </Modal.Header>
+
+                        <Modal.Body> */}
+                            <ListComponent  list =  {this.state.users}/>
+                        {/* </Modal.Body>
+
+                        <Modal.Footer>
+                            <Button onClick={this.close}>Close</Button>
+                            <Button bsStyle="primary">Save changes</Button>
+                        </Modal.Footer>         
+                    </Modal>
+                </div> */}
             </div>
         );
     }
@@ -86,7 +109,15 @@ export class LeaveComponent extends Component {
         ))
         .then(res => {
             this.setState({users:res.data.msg});
+            this.setState({showModal: true})
         })
         .catch(console.log)
     }
+    /* open() {
+        this.setState({showModal: true});
+    }
+    
+    close() {
+        this.setState({showModal: false});
+    } */
 }
